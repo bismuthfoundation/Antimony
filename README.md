@@ -52,6 +52,7 @@ Real time balance:
 
 ## Releases
 
+* 0.0.31 - Extra safety on server timeout
 * 0.0.3 - Added optional "Above" condition to "send" command.
 * 0.0.2 - Maintenance
 * 0.0.1 - Initial crude version, only balance and send commands

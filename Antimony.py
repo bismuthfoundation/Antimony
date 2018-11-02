@@ -31,7 +31,7 @@ from Cryptodome.Signature import PKCS1_v1_5
 from modules import rpcconnections
 
 
-__version__ = '0.0.3'
+__version__ = '0.0.31'
 
 
 VERBOSE = False
@@ -230,13 +230,16 @@ def send(ctx, recipient, amount, data='', operation='', above=0):
 
         reply = con.command('mpinsert', [tx_submit])
         if VERBOSE:
-            app_log.warning("Server replied '{}'".format(reply))
+            app_log.info("Server replied '{}'".format(reply))
+        if not reply:
+            reply = "Server timeout"
         if reply[-1] == "Success":
             if VERBOSE:
                 app_log.info("Transaction accepted to mempool")
             print(json.dumps({"result": "Success", "txid": txid}))
         else:
-            app_log.error("Error: {}".format(reply))
+            # app_log.error("Error: {}".format(reply))
+            print(json.dumps({"result": "Error", "reason": reply}))
     else:
         app_log.error("Invalid signature")
 
