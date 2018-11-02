@@ -7,13 +7,15 @@ Antimony is a chemical element with properties that are close to Bismuth's, but 
 
 Python3.6+
 
-## Installation
+## Installation
 
 `pip3 install -r requirements.txt`
 
 ## Help
 
 `./Antimony.py --help`
+
+(under windows, use `python3 Antimony` invocation)
 
 ## Example commands
 
@@ -32,7 +34,7 @@ Show your appreciation, send a few coffees or pizzas to the devs:
 
 Bis Url (10 bis): `bis://pay/437b30a2ea780cffb67cc220428d462cf2bedcbd3aab094aa7d4df9c/10///sLqe+F#1D1pM4>M4N+tb`
 
-Current Tip Jar: ![TipJar](https://eggpool.net/balance/index.php?address=437b30a2ea780cffb67cc220428d462cf2bedcbd3aab094aa7d4df9c)
+![TipJar](https://eggpool.net/balance/index.php?address=437b30a2ea780cffb67cc220428d462cf2bedcbd3aab094aa7d4df9c)
 
 
 ## Releases
