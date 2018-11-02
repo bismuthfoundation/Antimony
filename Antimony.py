@@ -31,7 +31,7 @@ from Cryptodome.Signature import PKCS1_v1_5
 from modules import rpcconnections
 
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 
 VERBOSE = False
@@ -83,6 +83,8 @@ def get_active_servers_list():
 
 def connect(ctx):
     """Tries to connect to a server, depending on the context. Fetches from API if needed."""
+    if ctx.obj.get('connection', None):
+        return
     if ctx.obj['host'] != 'auto':
         try:
             connection = rpcconnections.Connection((ctx.obj['host'], ctx.obj['port']), verbose=ctx.obj['verbose'])
@@ -109,6 +111,8 @@ def connect(ctx):
 
 def load_keys(ctx, address=''):
     """Load local keys unless an address is given. If address, then returns."""
+    if ctx.obj.get('key', None):
+        return
     if address:
         ctx.obj['key'] = None
         ctx.obj['address'] = address
@@ -171,7 +175,9 @@ def balance(ctx, address):
     balance = con.command('balanceget', [ctx.obj['address']])
     balance.insert(0, ctx.obj['address'])
     keys = ["address", "balance", "total_credits", "total_debits", "total_fees", "total_rewards", "balance_no_mempool"]
-    print(json.dumps(dict(zip(keys, balance))))
+    balance = dict(zip(keys, balance))
+    print(json.dumps(balance))
+    return balance
 
 
 @cli.command()
@@ -180,13 +186,25 @@ def balance(ctx, address):
 @click.argument('amount', default=0, type=float)
 @click.argument('data', default='', type=str)
 @click.argument('operation', default='', type=str)
-def send(ctx, recipient, amount, data='', operation=''):
-    """Send Bis or data to a RECIPIENT. DATA is an optional message;
-    OPERATION is optional and should be empty for regular transactions."""
+@click.argument('above', default=0, type=float)
+def send(ctx, recipient, amount, data='', operation='', above=0):
+    """Send Bis or data to a RECIPIENT. DATA is an optional message.
+    OPERATION is optional and should be empty for regular transactions.
+    ABOVE is optional, if > 0 then the tx will only be sent when balance > ABOVE"""
 
     check_address(recipient)
     load_keys(ctx)
     connect(ctx)
+    con = ctx.obj['connection']
+
+    if above > 0:
+        my_balance = float(con.command('balanceget', [ctx.obj['address']])[0])
+        if my_balance <= above:
+            if VERBOSE:
+                app_log.warning("Balance too low, {} instead of required {}, dropping.".format(my_balance, above))
+            print(json.dumps({"result": "Error", "reason": "Balance too low, {} instead of required {}"
+                             .format(my_balance, above)}))
+            return
 
     myaddress = ctx.obj['address']
     public_key_hashed = base64.b64encode(ctx.obj['pubkey'].encode('utf-8'))
@@ -210,7 +228,6 @@ def send(ctx, recipient, amount, data='', operation=''):
         tx_submit = (tx_timestamp, myaddress, recipient, '%.8f' % float(amount), str(signature_enc.decode("utf-8")),
                      str(public_key_hashed.decode("utf-8")), operation, data)
 
-        con = ctx.obj['connection']
         reply = con.command('mpinsert', [tx_submit])
         if VERBOSE:
             app_log.warning("Server replied '{}'".format(reply))

@@ -34,6 +34,11 @@ Send a tip to Antimony devs:
 `./Antimony.py send 437b30a2ea780cffb67cc220428d462cf2bedcbd3aab094aa7d4df9c 10`
 
 
+Send 100 BIS **only** if the balance is > 200 BIS;  
+`./Antimony.py send 437b30a2ea780cffb67cc220428d462cf2bedcbd3aab094aa7d4df9c 100 "" "" 200`  
+the two defaults empty parameters are needed since the "Above" condition is the third optional parameter.
+
+
 ## Tip Jar
 
 Show your appreciation, send a few coffees or pizzas to the devs:  
@@ -47,7 +52,9 @@ Real time balance:
 
 ## Releases
 
-0.0.1 - Crude version, only balance and send commands
+* 0.0.3 - Added optional "Above" condition to "send" command.
+* 0.0.2 - Maintenance
+* 0.0.1 - Initial crude version, only balance and send commands
 
 
 ## More
