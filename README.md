@@ -11,11 +11,18 @@ Python3.6+
 
 `pip3 install -r requirements.txt`
 
+Antimony needs a `wallet.der` file in the same directory.  
+Just copy the wallet.der file you want to use in Antimony's dir. No need for config, local node or anything else.
+
 ## Help
 
 `./Antimony.py --help`
 
 (under windows, use `python3 Antimony.py [...]` invocation)
+
+To get detailed help for a specific command, use --help with the command, for instance:
+
+`./Antimony send --help`
 
 ## Example commands
 
