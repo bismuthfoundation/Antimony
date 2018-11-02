@@ -48,3 +48,12 @@ Real time balance:
 ## Releases
 
 0.0.1 - Crude version, only balance and send commands
+
+
+## More
+
+A Stibnite cristal  
+![Stibnite](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Stibnite.jpg/640px-Stibnite.jpg)
+
+Stibnite is an Antimony sulfide.  
+This illustrates how complex things (What you will build) can emerge from simple elements (This tool).
