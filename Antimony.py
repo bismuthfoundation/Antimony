@@ -182,6 +182,19 @@ def balance(ctx, address):
 
 @cli.command()
 @click.pass_context
+def status(ctx):
+    """Get Status of distant server"""
+    connect(ctx)
+    if VERBOSE:
+        print("Connected to {}".format(ctx.obj['connection'].ipport))
+    con = ctx.obj['connection']
+    status = con.command('statusjson')
+    print(json.dumps(status))
+    return status
+
+
+@cli.command()
+@click.pass_context
 @click.argument('recipient', type=str)
 @click.argument('amount', default=0, type=float)
 @click.argument('data', default='', type=str)
